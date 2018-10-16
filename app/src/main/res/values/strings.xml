@@ -5,4 +5,6 @@
     <string name="ChainFor">ChainFor</string>
     <string name="_360">360</string>
     <string name="vivo">vivo</string>
+    <string name="oppo">oppo</string>
+    <string name="package_installer">package_installer</string>
 </resources>

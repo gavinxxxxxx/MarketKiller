@@ -8,7 +8,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 import java.io.OutputStream
 
 
-class VivoAccessibilityService : AccessibilityService() {
+class OppoAccessibilityService : AccessibilityService() {
 
     private lateinit var su: OutputStream
     private val handler = Handler()
@@ -26,8 +26,8 @@ class VivoAccessibilityService : AccessibilityService() {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 println("TYPE_WINDOW_STATE_CHANGED - ${event.className}")
                 when (event.className.toString()) {
-                    "com.bbk.appstore.ui.AppStoreTabActivity" -> onMainOpen()
-                    "com.bbk.appstore.ui.search.SearchActivity" -> onSearchOpen()
+                    "a.a.a.agk" -> onMainOpen()
+                    "com.oppo.cdo.search.c" -> onSearchOpen()
                 }
             }
             AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
@@ -41,50 +41,50 @@ class VivoAccessibilityService : AccessibilityService() {
         handler.postDelayed({
             println("首页 START")
             rootInActiveWindow?.apply {
-                findAccessibilityNodeInfosByViewId("com.bbk.appstore:id/search_keys_layout")
+                findAccessibilityNodeInfosByViewId("com.oppo.market:id/actionbar_content")
                         .firstOrNull()?.apply {
                             println("找到搜索页入口 尝试打开搜索页")
                             performAction(AccessibilityNodeInfo.ACTION_CLICK)
                         } ?: println("找不到搜索页入口")
             }
-        }, 500)
+        }, 2000)
     }
 
     private fun onSearchOpen() {
         handler.postDelayed({
             println("搜索页 START")
             rootInActiveWindow?.apply {
-                findAccessibilityNodeInfosByViewId("com.bbk.appstore:id/search_input")
+                findAccessibilityNodeInfosByViewId("com.oppo.market:id/et_search")
                         .firstOrNull()?.apply {
                             println("找到搜索框 尝试输入搜索词")
                             val arguments = Bundle()
-                            arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "android")
+                            arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "链向财经")
                             performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
                         } ?: println("找不到搜索框")
             }
-        }, 500)
+        }, 2000)
     }
 
     private fun onQuerySuccess() {
         handler.postDelayed({
             println("尝试寻找搜索结果")
             rootInActiveWindow?.apply {
-                findAccessibilityNodeInfosByViewId("com.bbk.appstore:id/package_list_item_layout")
+                findAccessibilityNodeInfosByViewId("com.oppo.market:id/v_app_item")
                         .firstOrNull {
-                            it.findAccessibilityNodeInfosByViewId("com.bbk.appstore:id/package_list_item_app_title")
-                                    .firstOrNull()?.text.toString() == "Android"
+                            it.findAccessibilityNodeInfosByViewId("com.oppo.market:id/tv_name")
+                                    .firstOrNull()?.text.toString() == "链向财经"
                         }?.apply {
-                            findAccessibilityNodeInfosByViewId("com.bbk.appstore:id/download_btn_layout")
+                            findAccessibilityNodeInfosByViewId("com.oppo.market:id/bt_multifunc")
                                     ?.firstOrNull()?.apply {
-                                        if (this.getChild(0).text.toString() == "下载") {
+//                                        if (this.getChild(0).text.toString() == "下载") {
                                             performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                                        } else {
-                                            println("找到下载按钮 但状态错误")
-                                        }
+//                                        } else {
+//                                            println("找到下载按钮 但状态错误")
+//                                        }
                                     } ?: println("没找到下载项")
                         } ?: println("没找到搜索结果")
             }
-        }, 500)
+        }, 2000)
     }
 
 }

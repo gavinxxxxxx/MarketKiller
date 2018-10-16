@@ -81,6 +81,34 @@
                 android:resource="@xml/vivo_accessibility_service" />
         </service>
 
+        <service
+            android:name=".OppoAccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/oppo"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/oppo_accessibility_service" />
+        </service>
+
+        <service
+            android:name=".PackageInstallerAccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/package_installer"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/package_installer_accessibility_service" />
+        </service>
+
     </application>
 
 </manifest>

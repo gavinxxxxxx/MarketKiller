@@ -1,7 +1,6 @@
 package me.gavin.tools.mk
 
 import android.accessibilityservice.AccessibilityService
-import android.graphics.Rect
 import android.os.Handler
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
@@ -33,24 +32,16 @@ class _360AccessibilityService : AccessibilityService() {
 
     private fun onMainOpen() {
         handler.postDelayed({
+            println("首页 START")
             rootInActiveWindow?.apply {
-                findAccessibilityNodeInfosByViewId("com.qihoo.appstore:id/btn_search")
-                        .forEach {
-                            println("找到了 - $it")
-                            val rect = Rect()
-                            it.getBoundsInScreen(rect)
-                            val text = "adb shell input tap  ${rect.centerX()} ${rect.centerY()}"
-                            println(text)
-                            su.write(text.toByteArray())
-                        }
-
-                findAccessibilityNodeInfosByText("下载")
-                        .forEach {
-                            println("找到了 - $it")
-                            it.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                            val text = "adb shell input swipe 50 250 250 250 500"
-                            su.write(text.toByteArray())
-                        }
+                findAccessibilityNodeInfosByViewId("com.qihoo.appstore:id/common_title_alpha_view")
+                        .firstOrNull()?.apply {
+                            println(this)
+                            println("找到搜索页入口 尝试打开搜索页")
+                            performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                            parent.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                            performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+                        } ?: println("找不到搜索页入口")
             }
         }, 500)
     }
