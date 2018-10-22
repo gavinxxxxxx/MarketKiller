@@ -1,12 +1,14 @@
 package me.gavin.tools.mk.wx
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.wechat_control_activity.*
+import me.gavin.tools.mk.MonitorSysReceiver
 import me.gavin.tools.mk.R
 
 class WeChatControlActivity : AppCompatActivity() {
@@ -15,6 +17,11 @@ class WeChatControlActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.wechat_control_activity)
         initView()
+
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED)
+        intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+        registerReceiver(MonitorSysReceiver(), intentFilter)
     }
 
     private fun initView() {

@@ -4,18 +4,16 @@ import android.accessibilityservice.AccessibilityService
 import android.os.Handler
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import java.io.OutputStream
+import android.content.Intent
+import android.net.Uri
+import android.net.Uri.fromParts
+
+
 
 
 class PackageInstallerAccessibilityService : AccessibilityService() {
 
-    private lateinit var su: OutputStream
     private val handler = Handler()
-
-    override fun onCreate() {
-        super.onCreate()
-        su = Runtime.getRuntime().exec("su").outputStream
-    }
 
     override fun onInterrupt() {}
 
@@ -81,6 +79,12 @@ class PackageInstallerAccessibilityService : AccessibilityService() {
                         } ?: println("找不到打开按钮")
             }
         }, 2000)
+    }
+
+    private fun unInstall() {
+        val uri = Uri.fromParts("package", "com.example.demo", null)
+        val intent = Intent(Intent.ACTION_DELETE, uri)
+        startActivity(intent)
     }
 
 }

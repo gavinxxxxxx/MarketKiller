@@ -5,18 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import java.io.OutputStream
 
 
 class OppoAccessibilityService : AccessibilityService() {
 
-    private lateinit var su: OutputStream
     private val handler = Handler()
-
-    override fun onCreate() {
-        super.onCreate()
-        su = Runtime.getRuntime().exec("su").outputStream
-    }
 
     override fun onInterrupt() {}
 
@@ -58,7 +51,8 @@ class OppoAccessibilityService : AccessibilityService() {
                         .firstOrNull()?.apply {
                             println("找到搜索框 尝试输入搜索词")
                             val arguments = Bundle()
-                            arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "链向财经")
+//                            arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "链向财经")
+                            arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, "计算器")
                             performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)
                         } ?: println("找不到搜索框")
             }
@@ -72,15 +66,13 @@ class OppoAccessibilityService : AccessibilityService() {
                 findAccessibilityNodeInfosByViewId("com.oppo.market:id/v_app_item")
                         .firstOrNull {
                             it.findAccessibilityNodeInfosByViewId("com.oppo.market:id/tv_name")
-                                    .firstOrNull()?.text.toString() == "链向财经"
+//                                    .firstOrNull()?.text.toString() == "链向财经"
+                                    .firstOrNull()?.text.toString() == "OPPO计算器"
                         }?.apply {
                             findAccessibilityNodeInfosByViewId("com.oppo.market:id/bt_multifunc")
                                     ?.firstOrNull()?.apply {
-//                                        if (this.getChild(0).text.toString() == "下载") {
-                                            performAction(AccessibilityNodeInfo.ACTION_CLICK)
-//                                        } else {
-//                                            println("找到下载按钮 但状态错误")
-//                                        }
+                                        println("找到下载按钮 并点击")
+                                        performAction(AccessibilityNodeInfo.ACTION_CLICK)
                                     } ?: println("没找到下载项")
                         } ?: println("没找到搜索结果")
             }

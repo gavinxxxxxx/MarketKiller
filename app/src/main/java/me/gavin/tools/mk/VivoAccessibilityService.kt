@@ -5,17 +5,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import java.io.OutputStream
 
 
 class VivoAccessibilityService : AccessibilityService() {
 
-    private lateinit var su: OutputStream
     private val handler = Handler()
 
     override fun onCreate() {
         super.onCreate()
-        su = Runtime.getRuntime().exec("su").outputStream
+        println("onCreate - $this")
     }
 
     override fun onInterrupt() {}
